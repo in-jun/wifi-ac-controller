@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -42,9 +42,23 @@
             text-align: left;
         }
 
-        a {
-            color: #007bff;
+        .custom-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .custom-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
             text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .custom-button a:hover {
+            background-color: #0056b3;
         }
 
         ol {
@@ -66,6 +80,9 @@
         </ol>
         <p class="suggestion">문제가 지속된다면 <a href="https://github.com/in-jun/wifi-ac-controller/issues"
                 target="_blank">여기를 클릭하여 이슈를 제보해주세요</a>.</p>
+        <div class="custom-button">
+            <a href="/" class="custom-link">다시 시도</a>
+        </div>
     </div>
 </body>
 
