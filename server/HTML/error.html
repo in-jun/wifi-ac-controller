@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #ff5757;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 5px;
+            color: #555;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .suggestion {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        ol {
+            text-align: left;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>오류 발생</h1>
+        <p>에어컨 제어를 실패했습니다. 다음 사항을 확인해보세요:</p>
+        <ol>
+            <li>ESP8266 모듈이 제대로 동작하는지 확인하세요. 내부 LED가 켜지는지 확인하거나 모듈의 연결 상태를 점검합니다.</li>
+            <li>ESP8266 모듈과 클라이언트가 같은 Wi-Fi 네트워크에 연결되어 있는지 확인하세요.</li>
+            <li>모듈을 재부팅해보세요. 모듈을 끄고 다시 켜는 것으로 문제가 해결될 수 있습니다.</li>
+            <li>모듈의 내부 LED가 정상적으로 동작하는지 확인하세요. LED가 켜진 상태면 모듈이 동작 중임을 나타냅니다.</li>
+        </ol>
+        <p class="suggestion">문제가 지속된다면 <a href="https://github.com/in-jun/wifi-ac-controller/issues"
+                target="_blank">여기를 클릭하여 이슈를 제보해주세요</a>.</p>
+    </div>
+</body>
+
+</html>

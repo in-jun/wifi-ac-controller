@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"log"
 	"net"
@@ -10,6 +11,9 @@ import (
 	"strings"
 )
 
+//go:embed HTML/error.html
+var errorPage string
+
 var ipMap = make(map[string][]string)
 var dataFile = "data.txt"
 
@@ -18,11 +22,16 @@ func main() {
 
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/ip", handleStringRequest)
+	http.HandleFunc("/error", handleError)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatalf("서버 시작 실패: %v", err)
 	}
+}
+
+func handleError(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "%s", errorPage)
 }
 
 func handleRoot(w http.ResponseWriter, r *http.Request) {
@@ -54,7 +63,7 @@ func getRedirectURL(publicIP string, number int, path string) string {
 	privateIPs, exists := ipMap[publicIP]
 	if !exists || number < 0 || number >= len(privateIPs) || privateIPs[number] == "" {
 		log.Printf("잘못된 번호 또는 맵에 해당 공용 IP 주소가 없습니다. 공용 IP: %s, 번호: %d", publicIP, number)
-		return "https://github.com/in-jun/wifi-ac-controller"
+		return "/error"
 	}
 	return "http://" + privateIPs[number] + "/" + path
 }
