@@ -1,74 +1,173 @@
-# 에어컨 원격 제어 프로젝트
+# 📱 WiFi 에어컨 컨트롤러
 
-이 프로젝트는 ESP8266 마이크로컨트롤러 보드를 활용하여 에어컨을 웹을 통해 원격으로 제어하는 흥미로운 프로젝트입니다.
+<div align="center">
 
-## 필요한 라이브러리
+[![Arduino](https://img.shields.io/badge/platform-ESP8266-green.svg)](https://www.arduino.cc/)
 
-프로젝트를 구현하기 위해서는 아래의 라이브러리들이 필요합니다. Arduino IDE의 라이브러리 관리자에서 각 라이브러리 이름을 검색하여 쉽게 설치할 수 있습니다.
+> 🌡️ ESP8266과 IR LED를 활용한 스마트 에어컨 원격 제어 시스템
 
-1. ESP8266WiFi
-2. IRsend
-3. ir_Samsung
-4. IRremoteESP8266
-5. ESP8266WebServer
-6. ESP8266HTTPClient
+</div>
 
-## 기능 및 특징
+---
 
-이 프로젝트는 몇 가지 멋진 기능과 특징을 가지고 있습니다:
+## 📋 목차
 
--   웹 브라우저를 통해 에어컨을 간편하게 켜고 끌 수 있습니다.
--   각각의 디바이스에 고유한 deviceIndex를 할당하여 다중 제어가 가능합니다.
--   다수의 디바이스를 함께 제어하여 사용자의 경험을 향상시킵니다.
--   Golang 웹 서버를 통해 클라이언트의 내부 IP 주소 매핑 및 리디렉션을 간편하게 관리합니다.
+-   [개요](#-개요)
+-   [기능](#-기능)
+-   [준비물](#-준비물)
+-   [설치 방법](#-설치-방법)
+-   [하드웨어 연결](#-하드웨어-연결)
+-   [소프트웨어 구조](#️-소프트웨어-구조)
+-   [문제 해결](#-문제-해결)
 
-## 설치 및 사용 방법
+---
 
-프로젝트를 시작하는 방법을 살펴보겠습니다:
+## 📖 개요
 
-1. 저장소를 클론합니다: `git clone https://github.com/in-jun/wifi-ac-controller`
-2. Arduino IDE를 열고 `Esp8266.ino` 파일을 엽니다.
-3. 필요한 라이브러리를 설치합니다. 위에서 언급한 라이브러리들은 Arduino IDE의 라이브러리 관리자에서 손쉽게 설치할 수 있습니다.
-4. Wi-Fi 정보를 입력합니다:
+이 프로젝트는 ESP8266 마이크로컨트롤러를 사용하여 에어컨을 웹 브라우저를 통해 원격으로 제어할 수 있게 해주는 IoT 솔루션입니다.
 
-    ```cpp
-    const char *ssid = "your-ssid";
-    const char *password = "your-password";
+```mermaid
+graph LR
+    A[웹 브라우저] -->|HTTP 요청| B[Golang 서버]
+    B -->|내부 IP 리디렉션| C[ESP8266]
+    C -->|IR 신호| D[에어컨]
+```
+
+## ✨ 기능
+
+### 핵심 기능
+
+-   🌐 웹 기반 원격 제어
+-   📱 다중 디바이스 지원
+-   🔄 실시간 상태 모니터링
+-   🔒 안전한 내부 IP 매핑
+
+### 기술적 특징
+
+-   ESP8266 WiFi 모듈 활용
+-   IR LED를 통한 에어컨 제어
+-   Golang 기반 웹 서버
+-   동적 IP 매핑 시스템
+
+## 🔧 준비물
+
+### 하드웨어
+
+| 항목        | 수량 | 용도             |
+| ----------- | ---- | ---------------- |
+| ESP8266     | 1개  | 메인 컨트롤러    |
+| IR LED      | 1개  | 적외선 신호 송신 |
+| 점퍼 와이어 | 2개  | 연결용           |
+
+### 소프트웨어
+
+```yaml
+필수 라이브러리:
+    - ESP8266WiFi: WiFi 연결
+    - IRsend: IR 신호 전송
+    - ir_Samsung: 삼성 에어컨 프로토콜
+    - IRremoteESP8266: IR 리모컨 기능
+    - ESP8266WebServer: 웹 서버 기능
+    - ESP8266HTTPClient: HTTP 클라이언트
+```
+
+## 🚀 설치 방법
+
+### 1. 환경 설정
+
+```bash
+# 저장소 클론
+git clone https://github.com/in-jun/wifi-ac-controller
+
+# Arduino IDE 설치
+# Windows/macOS: 공식 웹사이트에서 다운로드
+# Linux:
+sudo apt-get install arduino
+```
+
+### 2. WiFi 설정
+
+```cpp
+// Esp8266.ino
+const char *ssid = "your-ssid";        // WiFi SSID
+const char *password = "your-password"; // WiFi 비밀번호
+const int deviceIndex = 0;             // 디바이스 인덱스
+```
+
+### 3. 업로드
+
+1. Arduino IDE 실행
+2. Tools → Board → ESP8266 선택
+3. Port 선택
+4. Upload 버튼 클릭
+
+## 🔌 하드웨어 연결
+
+### IR LED 연결도
+
+```
+ESP8266  |  IR LED
+---------|----------
+GPIO (D4)|  숏 핀(빨강)
+GND      |  롱 핀(흰색)
+```
+
+### LED 상태 표시
+
+| LED 상태    | 의미      |
+| ----------- | --------- |
+| 빠른 깜박임 | 초기화 중 |
+| 켜짐        | 에러 발생 |
+| 꺼짐        | 정상 작동 |
+
+## 🖥️ 소프트웨어 구조
+
+### 웹 서버 작동 방식
+
+```mermaid
+sequenceDiagram
+    Client->>Server: URL 요청
+    Server->>Server: 디바이스 인덱스 확인
+    Server->>Server: 공용 IP 매핑
+    Server->>Client: 내부 IP 리디렉션
+    Client->>ESP8266: 제어 명령 전송
+```
+
+### API 엔드포인트
+
+| 엔드포인트 | 기능      | 예시        |
+| ---------- | --------- | ----------- |
+| /on        | 전원 켜기 | `/0/on`     |
+| /off       | 전원 끄기 | `/0/off`    |
+| /status    | 상태 확인 | `/0/status` |
+
+## 🔍 문제 해결
+
+### 일반적인 문제
+
+-   WiFi 연결 실패
+
+    ```bash
+    # 해결 방법
+    1. WiFi 신호 강도 확인
+    2. 비밀번호 재확인
+    3. ESP8266 재부팅
     ```
 
-5. 디바이스에 맞게 설정을 변경합니다:
-
-    ```cpp
-    const int deviceIndex = 0; // 디바이스의 인덱스
+-   IR 신호 미작동
+    ```bash
+    # 확인사항
+    1. LED 연결 상태
+    2. GPIO 핀 번호
+    3. 에어컨과의 거리
     ```
 
-6. 업로드 버튼을 눌러 ESP8266 보드에 프로그램을 업로드합니다.
-7. 웹 브라우저에서 `https://aciotcontrol.onrender.com/${deviceIndex}/on`과 같은 URL을 입력하여 에어컨을 쉽게 제어하세요.
+---
 
-## ESP8266 모듈과 IR LED 연결
+<div align="center">
 
-이 프로젝트에서는 에어컨을 제어하기 위해 IR LED를 활용하며, 이를 위해 ESP8266 모듈과 IR LED를 연결해야 합니다. 연결 방법을 간략히 알아보겠습니다:
+**[맨 위로 올라가기](#-wifi-에어컨-컨트롤러)**
 
--   IR LED 숏 핀 (빨간색): ESP8266의 GPIO 핀 (D4)
--   IR LED 롱 핀 (흰색): GND (지상, 그라운드) 핀
+Made with ❤️ by [in-jun](https://github.com/in-jun)
 
-IR LED의 숏 핀을 ESP8266의 GPIO 핀에 연결하고, 롱 핀을 GND에 연결합니다. 이렇게 연결하면 ESP8266 모듈로부터 IR LED를 제어할 수 있습니다.
-
-## 내부 LED 활용
-
-ESP8266 모듈의 내부 LED를 활용하여 초기화 및 에러 상태를 나타낼 수 있습니다. `setup()` 함수 내에서 내부 LED를 제어하는 코드가 포함되어 있습니다.
-
-## Golang 웹 서버
-
-### 요청 처리 흐름
-
-클라이언트의 요청을 처리하는 과정은 다음과 같습니다:
-
-1. 클라이언트가 특정 URL을 요청합니다.
-2. 웹 서버는 받은 URL에서 디바이스 인덱스와 경로를 파악합니다.
-3. 서버는 클라이언트의 공용 IP 주소를 식별합니다.
-4. 내부 IP 매핑 정보를 참고하여 해당 공용 IP 주소에 대한 내부 IP 주소를 확인합니다.
-5. 확인된 내부 IP 주소로 리디렉션 응답을 생성하고, 클라이언트에게 보냅니다.
-6. 클라이언트는 서버로부터 받은 리디렉션 응답을 처리하여 해당 내부 IP 주소로 접속합니다.
-
-이렇게 함으로써 클라이언트는 ESP8266 모듈의 내부 IP 주소를 알 필요 없이, 서버를 통해 쉽게 ESP8266 모듈에 접속할 수 있습니다. 이는 내부 IP 주소 노출 없이도 디바이스에 편리하게 접속할 수 있는 장점으로 사용자 경험을 향상시킵니다.
+</div>
